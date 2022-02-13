@@ -16,6 +16,8 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
 
+import java.util.concurrent.TimeUnit;
+
 import static spring_security.Spring_security_myDemo.security.ApplicationUserPermision.*;
 import static spring_security.Spring_security_myDemo.security.ApplicationUserRole.*;
 
@@ -48,7 +50,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login").permitAll()
-                .defaultSuccessUrl("/courses", true);
+                .defaultSuccessUrl("/courses", true)
+                .and()
+                .rememberMe().tokenValiditySeconds((int)TimeUnit.DAYS.toSeconds(21))// default to 2 weeks
+                .key("somethingverysecured"); //added the Remember Me thing, that remembvers your cookies for longer than 30 mins
 
     }
 
